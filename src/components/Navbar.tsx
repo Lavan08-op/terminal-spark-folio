@@ -38,6 +38,19 @@ export function Navbar() {
             <a
               key={l.href}
               href={l.href}
+              onClick={(e) => {
+                const id = l.href.slice(1);
+                const el = document.getElementById(id);
+                if (!el) return;
+                e.preventDefault();
+                el.classList.remove("nav-flip");
+                // force reflow so re-adding restarts animation
+                void (el as HTMLElement).offsetWidth;
+                el.classList.add("nav-flip");
+                el.scrollIntoView({ behavior: "smooth", block: "start" });
+                history.replaceState(null, "", l.href);
+                window.setTimeout(() => el.classList.remove("nav-flip"), 1000);
+              }}
               className="font-mono text-[11px] uppercase tracking-[2px] text-muted transition-colors hover:text-cyan"
             >
               {l.label}
