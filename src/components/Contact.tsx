@@ -112,8 +112,20 @@ export function Contact() {
                 disabled={status === "sending"}
                 className="inline-flex items-center gap-2 rounded-sm bg-green px-5 py-2.5 font-mono text-xs font-semibold uppercase tracking-[1.5px] text-bg transition-all hover:shadow-[0_0_24px_-4px_rgba(0,255,136,0.7)] disabled:opacity-60"
               >
-                {status === "sent" ? "✓ opened mail client" : "▶ execute send()"}
+                {status === "sending"
+                  ? "· transmitting…"
+                  : status === "sent"
+                    ? "✓ message delivered"
+                    : status === "error"
+                      ? "✗ retry send()"
+                      : "▶ execute send()"}
               </button>
+              {status === "error" && errorMsg && (
+                <p className="font-mono text-[11px] text-[#ff5f57]">// {errorMsg}</p>
+              )}
+              {status === "sent" && (
+                <p className="font-mono text-[11px] text-green">// stored securely — I'll reply within 24h.</p>
+              )}
             </div>
           </form>
 
