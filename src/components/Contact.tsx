@@ -131,7 +131,7 @@ export function Contact() {
                     rel="noreferrer"
                     className="group flex items-center gap-3 text-text transition-colors hover:text-cyan"
                   >
-                    <Github className="h-4 w-4 text-cyan" />
+                    <GithubIcon className="h-4 w-4 text-cyan" />
                     <span className="font-mono text-xs">github.com/Lavan08-op</span>
                   </a>
                 </li>
@@ -142,7 +142,7 @@ export function Contact() {
                     rel="noreferrer"
                     className="group flex items-center gap-3 text-text transition-colors hover:text-cyan"
                   >
-                    <Linkedin className="h-4 w-4 text-cyan" />
+                    <LinkedinIcon className="h-4 w-4 text-cyan" />
                     <span className="font-mono text-xs">linkedin.com/in/lavanya-saini</span>
                   </a>
                 </li>
