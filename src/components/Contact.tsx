@@ -1,5 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { Mail, Phone } from "lucide-react";
+import { useServerFn } from "@tanstack/react-start";
+import { submitContactMessage } from "@/lib/contact.functions";
 
 const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
@@ -17,16 +19,32 @@ export function Contact() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
-  const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const send = useServerFn(submitContactMessage);
 
-  const submit = (e: FormEvent) => {
+  const submit = async (e: FormEvent) => {
     e.preventDefault();
     if (!name || !email || !message) return;
     setStatus("sending");
-    const body = encodeURIComponent(`${message}\n\n— ${name}`);
-    const subject = encodeURIComponent(`Portfolio contact — ${name}`);
-    window.location.href = `mailto:lavanyasaini615@gmail.com?subject=${subject}&body=${body}`;
-    setTimeout(() => setStatus("sent"), 400);
+    setErrorMsg(null);
+    try {
+      await send({
+        data: {
+          name,
+          email,
+          message,
+          userAgent: typeof navigator !== "undefined" ? navigator.userAgent.slice(0, 500) : undefined,
+        },
+      });
+      setStatus("sent");
+      setName("");
+      setEmail("");
+      setMessage("");
+    } catch (err) {
+      setStatus("error");
+      setErrorMsg(err instanceof Error ? err.message : "Something went wrong.");
+    }
   };
 
   return (
@@ -94,8 +112,20 @@ export function Contact() {
                 disabled={status === "sending"}
                 className="inline-flex items-center gap-2 rounded-sm bg-green px-5 py-2.5 font-mono text-xs font-semibold uppercase tracking-[1.5px] text-bg transition-all hover:shadow-[0_0_24px_-4px_rgba(0,255,136,0.7)] disabled:opacity-60"
               >
-                {status === "sent" ? "✓ opened mail client" : "▶ execute send()"}
+                {status === "sending"
+                  ? "· transmitting…"
+                  : status === "sent"
+                    ? "✓ message delivered"
+                    : status === "error"
+                      ? "✗ retry send()"
+                      : "▶ execute send()"}
               </button>
+              {status === "error" && errorMsg && (
+                <p className="font-mono text-[11px] text-[#ff5f57]">// {errorMsg}</p>
+              )}
+              {status === "sent" && (
+                <p className="font-mono text-[11px] text-green">// stored securely — I'll reply within 24h.</p>
+              )}
             </div>
           </form>
 
