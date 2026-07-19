@@ -101,7 +101,8 @@ export function Hero() {
               <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
             </a>
             <a
-              href="mailto:lavanyasaini615@gmail.com"
+              href="/lavanya-saini-cv.pdf"
+              download="LavanyaSaini_CV.pdf"
               className="inline-flex items-center gap-2 rounded-sm border border-[rgba(0,212,255,0.4)] px-6 py-3 font-mono text-xs uppercase tracking-[1.5px] text-cyan transition-colors hover:border-cyan hover:bg-[rgba(0,212,255,0.05)]"
             >
               <Download className="h-3.5 w-3.5" />
