@@ -7,10 +7,9 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
   return (
@@ -37,9 +36,6 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
-  useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-bg px-4 font-mono">
@@ -59,6 +55,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
           >
             retry
           </button>
+
           <a
             href="/"
             className="rounded-sm border border-[color:var(--border-hover)] px-4 py-2 text-xs font-semibold uppercase tracking-[1px] text-cyan hover:bg-[rgba(0,212,255,0.05)]"
