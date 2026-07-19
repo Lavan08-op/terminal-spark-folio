@@ -144,7 +144,7 @@ function ProjectDetail() {
                 // stack
               </div>
               <div className="flex flex-wrap gap-1.5">
-                {project.tech.map((t) => (
+                {project.tech.map((t: string) => (
                   <span
                     key={t}
                     className="rounded-sm border border-white/5 bg-white/[0.02] px-2.5 py-1 font-mono text-[11px] text-text/80"
@@ -161,7 +161,7 @@ function ProjectDetail() {
                 // highlights
               </div>
               <ul className="space-y-2 text-sm text-text/90">
-                {project.highlights.map((h) => (
+                {project.highlights.map((h: string) => (
                   <li key={h} className="flex gap-2">
                     <span className="text-cyan">▸</span>
                     <span>{h}</span>
