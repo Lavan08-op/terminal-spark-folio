@@ -8,6 +8,7 @@ export default defineConfig({
   plugins: [
     tanstackStart({
       server: { entry: "src/server.ts" },
+      ssr: false,
     }),
     react(),
     tailwindcss(),
