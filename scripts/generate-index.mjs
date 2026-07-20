@@ -8,7 +8,6 @@ const assetsDir = path.join(clientDir, "assets");
 const files = fs.readdirSync(assetsDir);
 const mainJs = files.find((f) => f.startsWith("index-") && f.endsWith(".js"));
 const mainCss = files.find((f) => f.startsWith("styles-") && f.endsWith(".css"));
-const routesJs = files.find((f) => f.startsWith("routes-") && f.endsWith(".js"));
 
 const html = `<!DOCTYPE html>
 <html lang="en">
@@ -30,7 +29,6 @@ const html = `<!DOCTYPE html>
   </head>
   <body>
     <div id="root"></div>
-    ${routesJs ? `<script type="module" src="/assets/${routesJs}"></script>` : ""}
     ${mainJs ? `<script type="module" src="/assets/${mainJs}"></script>` : ""}
   </body>
 </html>`;
