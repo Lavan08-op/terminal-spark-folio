@@ -30,7 +30,7 @@ export function Contact() {
 
     try {
       // Direct Supabase insert
-      const { error } = await supabase.from("contacts").insert([{ name, email, message }]);
+      const { error } = await supabase.from("contact_messages").insert([{ name, email, message }]);
 
       if (error) {
         console.error("Supabase insert error:", error);
