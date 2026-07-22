@@ -1,16 +1,8 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import {
-  Outlet,
-  Link,
-  createRootRouteWithContext,
-  useRouter,
-  HeadContent,
-  Scripts,
-} from "@tanstack/react-router";
-import { type ReactNode } from "react";
-
+import { Outlet, Link, createRootRouteWithContext } from "@tanstack/react-router";
+import { QueryClient } from "@tanstack/react-query";
 import appCss from "../styles.css?url";
 
+// Optional: keep a simple client-side error/not-found components
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-bg px-4 font-mono">
@@ -35,8 +27,6 @@ function NotFoundComponent() {
 
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
-  const router = useRouter();
-
   return (
     <div className="flex min-h-screen items-center justify-center bg-bg px-4 font-mono">
       <div className="max-w-md text-center">
@@ -47,15 +37,11 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
-            onClick={() => {
-              router.invalidate();
-              reset();
-            }}
+            onClick={reset}
             className="rounded-sm bg-cyan px-4 py-2 text-xs font-semibold uppercase tracking-[1px] text-bg hover:opacity-90"
           >
             retry
           </button>
-
           <a
             href="/"
             className="rounded-sm border border-[color:var(--border-hover)] px-4 py-2 text-xs font-semibold uppercase tracking-[1px] text-cyan hover:bg-[rgba(0,212,255,0.05)]"
@@ -69,63 +55,14 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lavanya Saini — Cybersecurity Analyst & Full-Stack Developer" },
-      {
-        name: "description",
-        content:
-          "Portfolio of Lavanya Saini — B.Tech IT @ MAIT Delhi. VAPT, penetration testing, and full-stack engineering with React, FastAPI, and the MERN stack.",
-      },
-      { name: "author", content: "Lavanya Saini" },
-      { property: "og:title", content: "Lavanya Saini — Cybersecurity & Full-Stack" },
-      {
-        property: "og:description",
-        content:
-          "Cybersecurity analyst and full-stack developer. VAPT · Pen Testing · React · FastAPI. Open to internships.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "theme-color", content: "#050c1a" },
-    ],
-    links: [
-      { rel: "stylesheet", href: appCss },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap",
-      },
-    ],
-  }),
-  shellComponent: RootShell,
+  // No head function needed – meta tags are in index.html
+  // No shellComponent – HTML structure is provided by index.html
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
   errorComponent: ErrorComponent,
 });
 
-function RootShell({ children }: { children: ReactNode }) {
-  return (
-    <html lang="en">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  );
-}
-
 function RootComponent() {
-  const { queryClient } = Route.useRouteContext();
-  return (
-    <QueryClientProvider client={queryClient}>
-      <Outlet />
-    </QueryClientProvider>
-  );
+  // The QueryClientProvider is already in client.tsx, so we only need to render the outlet
+  return <Outlet />;
 }

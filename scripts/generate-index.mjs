@@ -36,3 +36,21 @@ const html = `<!DOCTYPE html>
 fs.writeFileSync(path.join(clientDir, "index.html"), html);
 console.log("✓ index.html generated");
 console.log("JS files included:", jsFiles);
+
+// --- Patch SSR flag in the main index chunk ---
+const indexChunks = jsFiles.filter((f) => f.startsWith("index-") && f.endsWith(".js"));
+if (indexChunks.length === 0) {
+  console.warn("⚠ No index chunk found, skipping SSR patch.");
+} else {
+  const chunkPath = path.join(assetsDir, indexChunks[0]);
+  let content = fs.readFileSync(chunkPath, "utf8");
+
+  // In minified code, ssr:true becomes ssr:!0, ssr:false becomes ssr:!1
+  const patched = content.replace(/ssr:!0/g, "ssr:!1");
+  if (patched !== content) {
+    fs.writeFileSync(chunkPath, patched);
+    console.log("✓ Patched ssr:true → false in", indexChunks[0]);
+  } else {
+    console.warn("⚠ Could not find ssr:!0 in the bundle – patch may not be needed.");
+  }
+}
