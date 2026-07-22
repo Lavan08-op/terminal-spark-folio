@@ -166,7 +166,7 @@ export function Contact() {
                 </li>
                 <li>
                   <a
-                    href="https://www.linkedin.com/in/lavanya-saini"
+                    href="https://www.linkedin.com/in/lavanya-saini-556a36324"
                     target="_blank"
                     rel="noreferrer"
                     className="group flex items-center gap-3 text-text transition-colors hover:text-cyan"
